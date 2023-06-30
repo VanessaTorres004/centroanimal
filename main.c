@@ -6,25 +6,17 @@
 #define MAX_EDAD 30
 #define MAX_FAMILIAR 30
 
-typedef struct {
-	float cantidad;
-	float precio;
-	float subtotal;
-} Producto;
-
 void ingresarDatosFacturacion(char *ID) {
-	printf("Inserte ID de la mascota: ");
-	scanf("%s", ID);
 }
 
-void imprimirFactura(const char *ID, Producto *productos, int cantidadProductos, float total) {
+void imprimirFactura(const char *ID, float *cantidad, float *precio, float *subtotal, int cantidadProductos, float total) {
 	printf("############Datos de facturacion ##########\n");
-	printf("ID: %s\n", ID);
+	printf("ID de la mascota: %s\n", ID);
 	
 	printf(" ** FACTURA **\n");
 	printf("PRODUCTO\t\tCANTIDAD\tVALOR\t\tUNITARIO\n");
 	for (int i = 0; i < cantidadProductos; i++) {
-		printf("%d\t\t\t%.2f\t\t%.2f\t\t%.2f\n", i + 1, productos[i].cantidad, productos[i].precio, productos[i].subtotal);
+		printf("%d\t\t\t%.1f\t\t%.2f\t\t%.2f\n", i+1, cantidad[i], precio[i], subtotal[i]);
 	}
 	
 	printf("El total es %.2f\n", total);
@@ -37,7 +29,9 @@ int main() {
 	char TIPO[MAX_TIPO];
 	char EDAD[MAX_EDAD];
 	char FAMILIAR[MAX_FAMILIAR];
-	Producto productos[5];
+	float cantidad[MAX_FAMILIAR];
+	float precio[MAX_FAMILIAR];
+	float subtotal[MAX_FAMILIAR];
 	int cantidadProductos = 0;
 	float total = 0;
 	char opcion;
@@ -55,16 +49,15 @@ int main() {
 		case 'a':
 			printf("ID de la mascota: ");
 			scanf("%s", ID);
-			printf("Nombre de la mascota\n");
+			printf("Nombre de la mascota: ");
 			scanf("%s", NOMBRE);
-			printf("tipo\n");
+			printf("tipo:");
 			scanf("%s", TIPO);
-			printf("edad\n");
+			printf("edad:");
 			scanf("%s", EDAD);
-			printf("nombre del dueño\n");
+			printf("nombre del dueño:");
 			scanf("%s", FAMILIAR);
 			printf("registro completo\n");
-			break;
 			break;
 		case 'b':
 			printf("***ELIJA un servicio***\n");
@@ -75,47 +68,49 @@ int main() {
 			printf("ID:5 nombre:hotel  descripcion:se cuida al animal x noche precio($20)\n");
 			scanf(" %c", &opcion);
 			
-			Producto *producto = &productos[cantidadProductos];
+			float *producto_cantidad = &cantidad[cantidadProductos];
+			float *producto_precio = &precio[cantidadProductos];
+			float *producto_subtotal = &subtotal[cantidadProductos];
 			
 			switch (opcion) {
 			case '1':
 				printf("Ingrese la cantidad: ");
-				scanf("%f", &(producto->cantidad));
-				producto->precio = 15;
+				scanf("%f", producto_cantidad);
+				*producto_precio = 15;
 				break;
 			case '2':
 				printf("Ingrese la cantidad: ");
-				scanf("%f", &(producto->cantidad));
-				producto->precio = 20;
+				scanf("%f", producto_cantidad);
+				*producto_precio = 20;
 				break;
 			case '3':
 				printf("Ingrese la cantidad: ");
-				scanf("%f", &(producto->cantidad));
-				producto->precio = 10;
+				scanf("%f", producto_cantidad);
+				*producto_precio = 10;
 				break;
 			case '4':
 				printf("Ingrese la cantidad: ");
-				scanf("%f", &(producto->cantidad));
-				producto->precio = 18;
+				scanf("%f", producto_cantidad);
+				*producto_precio = 18;
 				break;
 			case '5':
 				printf("Ingrese la cantidad: ");
-				scanf("%f", &(producto->cantidad));
-				producto->precio = 20;
+				scanf("%f", producto_cantidad);
+				*producto_precio = 20;
 				break;
 			default:
 				printf("Opcion invalida\n");
 				break;
 			}
 			
-			producto->subtotal = producto->cantidad * producto->precio;
-			total += producto->subtotal;
+			*producto_subtotal = *producto_cantidad * *producto_precio;
+			total += *producto_subtotal;
 			cantidadProductos++;
 			
 			break;
 		case 'c':
 			ingresarDatosFacturacion(ID);
-			imprimirFactura(ID, productos, cantidadProductos, total);
+			imprimirFactura(ID, cantidad, precio, subtotal, cantidadProductos, total);
 			return 0;
 		default:
 			break;
